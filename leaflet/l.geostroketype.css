@@ -1,0 +1,10 @@
+#leaflet-control-GeoStrokeType{
+	background:#fff;
+	border:1px solid #aaa;
+	text-align:center;
+}
+
+#leaflet-control-GeoStrokeType label{
+	padding-right: 5px;
+	margin: 2px;
+}
