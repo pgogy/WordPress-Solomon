@@ -9,19 +9,19 @@
 		function create(){
 	
 			$labels = array(
-				'name' => 'Solomon Map Item',
-				'singular_name' => 'Solomon Map Item',
-				'add_new' => 'Add new Solomon Map Item',
-				'add_new_item' => 'Add Solomon Map Item',
-				'edit_item' => 'Edit Solomon Map Item',
-				'new_item' => 'New Solomon Map Item',
-				'all_items' => 'All Solomon Map Items',
-				'view_item' => 'View Solomon Map Items',
-				'search_items' => 'Search Solomon Map Item',
-				'not_found' =>  'No Solomon Map Items found',
-				'not_found_in_trash' => 'No Solomon Map Items found in trash', 
+				'name' => 'Map Item',
+				'singular_name' => 'Map Item',
+				'add_new' => 'Add new Map Item',
+				'add_new_item' => 'Add Map Item',
+				'edit_item' => 'Edit Map Item',
+				'new_item' => 'New Map Item',
+				'all_items' => 'All Map Items',
+				'view_item' => 'View Map Items',
+				'search_items' => 'Search Map Item',
+				'not_found' =>  'No Map Items found',
+				'not_found_in_trash' => 'No Map Items found in trash', 
 				'parent_item_colon' => '',
-				'menu_name' => 'Solomon Map Items'
+				'menu_name' => 'Map Items'
 			);
 				
 			$args = array(
@@ -31,7 +31,7 @@
 				'capability_type' => 'post',
 				'hierarchical' => false,
 				'rewrite' => false,
-				'supports' => array('title', 'editor'),
+				'supports' => array('title'),
 				'menu_position' => 99,
 				'exclude_from_search' => true,
 				'publically_queryable' => true,

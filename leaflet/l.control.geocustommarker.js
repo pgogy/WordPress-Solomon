@@ -13,6 +13,8 @@ L.GeoCustomMarker.Result = function (x, y, label) {
     this.Label = label;
 };
 
+console.log("geocustommarker");
+
 L.Control.GeoCustomMarker = L.Control.extend({
     options: {
         position: 'topright',
@@ -42,11 +44,12 @@ L.Control.GeoCustomMarker = L.Control.extend({
 		
 		list = "";
 		first = "";
+		
 		for(x in customMarkers.customMarkers){
 			if(first==""){
 				first = customMarkers.customMarkers[x];
 			}
-			list += "<img id='icon_" + x + "' src='" + customMarkers.customMarkers[x] + "' />";
+			list += "<img id='icon_" + x + "' src='" + customMarkers.customMarkers[x][0] + "' size='" + customMarkers.customMarkers[x]['1'] + "," + customMarkers.customMarkers[x]['2'] + "' />";
 		}
 		
         var searchbutton = document.createElement('div');
@@ -55,7 +58,7 @@ L.Control.GeoCustomMarker = L.Control.extend({
         searchbutton.innerHTML = '<p id="geocustommarkeropen"><img src="' + first + '" /></p><div id="geocustommarkers">' + list + '</div>';
         this._searchbutton = searchbutton;
 
-		L.GeoCustomMarker.defaultMarker = first;
+		L.GeoCustomMarker.defaultMarker = first[0];
 
 		L.DomEvent
 		  .addListener(this._searchbutton.firstChild, 'click', this._onClickOpen, this);
@@ -81,10 +84,13 @@ L.Control.GeoCustomMarker = L.Control.extend({
     },
 	
 	_onClickPic: function (e) {
+	
+		console.log("pic clicked");
 
 		document.getElementById("geocustommarkeropen").firstChild.src = e.target.src;
 		L.GeoCustomMarker.defaultMarker = e.target.src;
 		L.GeoCustomMarker.defaultIcon = jQuery(e.target).attr("id");
+		L.GeoCustomMarker.defaultIconSize = jQuery(e.target).attr("size");
 		
 		console.log(L.GeoCustomMarker.defaultIcon);
 		

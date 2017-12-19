@@ -38,13 +38,13 @@ jQuery(document).ready(
 		new L.Control.GeoStrokeColor().addTo(map);
 		new L.Control.GeoStrokeType().addTo(map);
 		new L.Control.GeoCustomMarker().addTo(map);
-
+		
 		new L.Control.GeoSearch({
 			provider: new L.GeoSearch.Provider.OpenStreetMap(),
 			crossOrigin: null,
 			showMarker: false
 		}).addTo(map);
-
+		
 		var customIcon = L.icon({
 					iconUrl: "http://localhost/2.jpg",
 					shadowUrl: '',
@@ -221,7 +221,7 @@ jQuery(document).ready(
 				current = "";
 			
 			}
-		
+
 			var shapes = getShapes(drawnItems, e['layerType']);
 			
 			jQuery('#EntryLatlng').val(shapes);
@@ -371,6 +371,6 @@ jQuery(document).ready(
 		jQuery('input[type=radio][name=GeoStrokeType]').change(function() {
 			map.strokeType = this.value.split("--").join(" ");;
 		});
-	
+		
 	}
 );

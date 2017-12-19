@@ -1,0 +1,17 @@
+#solomonmapimage_overlaymeta label{
+	display:block;
+	width:100%;
+	text-align:center;
+}
+
+#solomonmapimage_overlaymeta input{
+	display:block;
+	width:100%;
+	text-align:center;
+}
+
+#solomonmapimage_overlaymeta #overlayimages img{
+	margin:1%;
+	width:9%;
+}
+

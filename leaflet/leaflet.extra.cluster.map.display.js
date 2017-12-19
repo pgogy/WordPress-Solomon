@@ -27,5 +27,7 @@ jQuery(document).ready(
 			id: 'examples.map'
         }).addTo(map);
 		
+		console.log("pre markers");
+		
 	}
 );

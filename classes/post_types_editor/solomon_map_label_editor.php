@@ -1,6 +1,6 @@
 <?PHP
 
-	class solomon_map_item_editor{
+	class solomon_map_label_editor{
 	
 		function __construct(){
 
@@ -15,17 +15,17 @@
 				if(isset($_GET['post'])){
 			
 					$post = get_post($_GET['post']);
-	
-					if($_GET['action']=="edit" && $post->post_type=="solomonmapitem"){
+		
+					if($_GET['action']=="edit" && $post->post_type=="solomonmaplabel"){
 						$action = true;
 					}
-					
+
 				}
 
 			}else{
 			
 				if(isset($_GET['post_type'])){
-					if($_GET['post_type']=="solomonmapitem"){
+					if($_GET['post_type']=="solomonmaplabel"){
 						$action = true;
 					}
 				}
@@ -65,6 +65,8 @@
 			wp_enqueue_script( 'leaflet_js' );
 			wp_register_script( 'leaflet_draw_js', plugins_url() . '/solomon/leaflet/leaflet.draw.js', false, '1.0.0' );
 			wp_enqueue_script( 'leaflet_draw_js' );
+			wp_register_script( 'leaflet_setup_js', plugins_url() . '/solomon/leaflet/leaflet.setup.js', false, '1.0.0' );
+			wp_enqueue_script( 'leaflet_setup_js' );
 			wp_register_script( 'leaflet_geosearch_js', plugins_url() . '/solomon/leaflet/l.control.geosearch.js', false, '1.0.0' );
 			wp_enqueue_script( 'leaflet_geosearch_js' );
 			wp_register_script( 'leaflet_geolayercolor_js', plugins_url() . '/solomon/leaflet/l.control.geolayercolor.js', false, '1.0.0' );
@@ -123,21 +125,22 @@
 			wp_enqueue_script( 'leaflet_extra_js' );
 
 		}
-	
-		function metabox(){
-	
-			add_meta_box("solomonmapitemmeta",__("Edit Map"),array($this,"editor"), "solomonmapitem", "advanced", "high");
-
-		}	
 
 		function move_deck() {
 
 		    	global $post, $wp_meta_boxes;
 
 		    	do_meta_boxes(get_current_screen(), 'advanced', $post);
-		    	unset($wp_meta_boxes['solomonmapitem']['advanced']);
+		    	unset($wp_meta_boxes["solomonmaplabel"]['advanced']);
 	
 		}
+	
+
+		function metabox(){
+	
+			add_meta_box("solomonmaplabelmeta",__("Edit Map"),array($this,"editor"),"solomonmaplabel","advanced","high");
+
+		}	
 		
 		function layer_options($counter,$geocolors,$geostrokecolors,$geostrokeopacity,$geofillopacity,$geostroke){
 			?>
@@ -152,7 +155,7 @@
 		function editor(){	
 			global $post;
 			?> 
-				<p><?PHP echo __("Use the map below to add an item. Options for the item are on the right hand side."); ?></p>
+				<p><?PHP echo __("Use the tools on the right to draw a label and add the text below"); ?></p>
 				<div id="map" style="height:600px; width:100%"></div>
 				<?PHP
 					
@@ -173,12 +176,11 @@
 
 					$counter = 0;	
 
-					/*$query_images_args = array(
+					$query_images_args = array(
 						'post_type'      => 'attachment',
 						'post_mime_type' => 'image',
 						'post_status'    => 'inherit',
-						//'posts_per_page' => -1,
-						'posts_per_page' => 1
+						'posts_per_page' => - 1,
 					);
 
 					$query_images = new WP_Query( $query_images_args );
@@ -203,7 +205,7 @@
 						?>
 						<div id="custom_icon_<?PHP echo $image->ID ?>" iconurl="<?PHP echo $date . "/" . $data['sizes']['medium']['file']; ?>" size="<?PHP echo $data['sizes']['medium']['width']; ?>, <?PHP echo $data['sizes']['medium']['height']; ?>" ></div> 
 						<?PHP
-					}*/
+					}
 					
 					?><div id="custom_icon_0" iconurl="<?PHP echo site_url() . "/wp-content/plugins/" . $default; ?>" size="<?PHP echo "25, 41"; ?>" ></div><?PHP
 					
@@ -306,6 +308,7 @@
 					}
 					
 				?>
+				<p>Put the label for this marker / shape in the normal text editor box</p>
 				<input type="hidden" name="geodata" id="EntryLatlng" value="<?PHP echo implode(" ", $geodata); ?>" />
 				<input type="hidden" name="geofillcolors" id="EntryColors" value="<?PHP echo implode(" ", $geocolors); ?>" />
 				<input type="hidden" name="geomarkers" id="EntryMarkers" value="<?PHP echo implode(" ", $geomarkers); ?>" />
@@ -321,10 +324,9 @@
 		
 		function save_post($post_id){
 			$post = get_post($post_id);
-			if($post->post_type=="solomonmapitem"){
+			if($post->post_type=="solomonmaplabel"){
 				if(count($_POST)!=0){
 					if(isset($_POST['action'])){
-					
 						update_post_meta($post_id, "geodata", $_POST['geodata']); 
 						update_post_meta($post_id, "geostrokecolors", $_POST['geostrokecolors']); 
 						update_post_meta($post_id, "geofillcolors", $_POST['geofillcolors']); 
@@ -342,5 +344,5 @@
 	
 	}
 	
-	$solomon_map_item_editor = new solomon_map_item_editor();
+	$solomon_map_label_editor = new solomon_map_label_editor();
 	

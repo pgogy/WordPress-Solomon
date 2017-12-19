@@ -3,6 +3,9 @@
  (c) 2010-2013, Vladimir Agafonkin
  (c) 2010-2011, CloudMade
 */
+
+console.log("leaflet 0.7.7");
+
 ! function(t, e, i) {
     var n = t.L,
         o = {};
@@ -26,7 +29,7 @@
             stamp: function() {
                 var t = 0,
                     e = "_leaflet_id";
-                return function(i) {
+				return function(i) {
                     return i[e] = i[e] || ++t, i[e]
                 }
             }(),
@@ -1308,9 +1311,9 @@
                 this.wmsParams = i, o.setOptions(this, e)
             },
             onAdd: function(t) {
-                this._crs = this.options.crs || t.options.crs, this._wmsVersion = parseFloat(this.wmsParams.version);
+				this._crs = this.options.crs || t.options.crs, this._wmsVersion = parseFloat(this.wmsParams.version);
                 var e = this._wmsVersion >= 1.3 ? "crs" : "srs";
-                this.wmsParams[e] = this._crs.code, o.TileLayer.prototype.onAdd.call(this, t)
+				this.wmsParams[e] = this._crs.code, o.TileLayer.prototype.onAdd.call(this, t)
             },
             getTileUrl: function(t) {
                 var e = this._map,
@@ -2650,7 +2653,7 @@
             return new o.GeoJSON(t, e)
         }, o.DomEvent = {
             addListener: function(t, e, i, n) {
-                var s, a, r, h = o.stamp(i),
+				var s, a, r, h = o.stamp(i),
                     l = "_leaflet_" + e + h;
                 return t[l] ? this : (s = function(e) {
                     return i.call(n || t, e || o.DomEvent._getEvent())
@@ -3299,7 +3302,7 @@
             return new o.Control(t)
         }, o.Map.include({
             addControl: function(t) {
-                return t.addTo(this), this
+				return t.addTo(this), this
             },
             removeControl: function(t) {
                 return t.removeFrom(this), this

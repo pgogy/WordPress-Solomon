@@ -8,6 +8,10 @@
 		}
 		
 		function get_post_content(){
+			if(strpos($_POST['post_id'],"_")!==FALSE){
+				$parts = explode("_",$_POST['post_id']);
+				$_POST['post_id'] = $parts[1];
+			}
 			$post = get_post($_POST['post_id']);
 			echo do_shortcode($post->post_content);
 			die();

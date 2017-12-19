@@ -166,7 +166,7 @@
             zIndexOffset: 2e3
         },
         initialize: function(t, e) {
-            this.options.drawError.message = L.drawLocal.draw.handlers.polyline.error, e && e.drawError && (e.drawError = L.Util.extend({}, this.options.drawError, e.drawError)), this.type = L.Draw.Polyline.TYPE, L.Draw.Feature.prototype.initialize.call(this, t, e)
+			this.options.drawError.message = L.drawLocal.draw.handlers.polyline.error, e && e.drawError && (e.drawError = L.Util.extend({}, this.options.drawError, e.drawError)), this.type = L.Draw.Polyline.TYPE, L.Draw.Feature.prototype.initialize.call(this, t, e)
         },
         addHooks: function() {
             L.Draw.Feature.prototype.addHooks.call(this), this._map && (this._markers = [], this._markerGroup = new L.LayerGroup, this._map.addLayer(this._markerGroup), this._poly = new L.Polyline([], this.options.shapeOptions), this._tooltip.updateContent(this._getTooltipText()), this._mouseMarker || (this._mouseMarker = L.marker(this._map.getCenter(), {
@@ -192,8 +192,8 @@
         },
         addVertex: function(t) {
             var e = this._markers.length;
-            return e > 0 && !this.options.allowIntersection && this._poly.newLatLngIntersects(t) ? (this._showErrorTooltip(), void 0) : (this._errorShown && this._hideErrorTooltip(), this._markers.push(this._createMarker(t)), this._poly.addLatLng(t), 2 === this._poly.getLatLngs().length && this._map.addLayer(this._poly), this._vertexChanged(t, !0), void 0)
-        },
+			return e > 0 && !this.options.allowIntersection && this._poly.newLatLngIntersects(t) ? (this._showErrorTooltip(), void 0) : (this._errorShown && this._hideErrorTooltip(), this._markers.push(this._createMarker(t)), this._poly.addLatLng(t), 2 === this._poly.getLatLngs().length && this._map.addLayer(this._poly), this._vertexChanged(t, !0), void 0)
+		},
         _finishShape: function() {
             var t = this._poly.newLatLngIntersects(this._poly.getLatLngs()[0], !0);
             return !this.options.allowIntersection && t || !this._shapeIsValid() ? (this._showErrorTooltip(), void 0) : (this._fireCreatedEvent(), this.disable(), this.options.repeatMode && this.enable(), void 0)
@@ -221,6 +221,14 @@
                 var i = L.point(e.originalEvent.clientX, e.originalEvent.clientY).distanceTo(this._mouseDownOrigin);
                 Math.abs(i) < 9 * (t.devicePixelRatio || 1) && this.addVertex(e.latlng)
             }
+			if(this.options.maxNodes==undefined){
+				this.options.maxNodes = -1;
+			}
+			if(this._markers!=undefined){
+				if((this.options.maxNodes)==this._markers.length){
+					this._finishShape();
+				}
+			}
             this._mouseDownOrigin = null
         },
         _updateFinishHandler: function() {
@@ -523,7 +531,6 @@
             for (t = 0, e = i - 1; i > t; e = t++)(0 !== t || L.Polygon && this._poly instanceof L.Polygon) && (s = this._markers[e], r = this._markers[t], this._createMiddleMarker(s, r), this._updatePrevNext(s, r))
         },
         _createMarker: function(t, e) {
-            console.log(this.options.icon);
 			var i = new L.Marker(t, {
                 draggable: !0,
                 icon: this.options.icon
@@ -609,11 +616,10 @@
         _initMarkers: function() {
             this._markerGroup || (this._markerGroup = new L.LayerGroup), this._createMoveMarker(), this._createResizeMarker()
         },
-        _createMoveMarker: function() { console.log("hello");},
+        _createMoveMarker: function() { },
         _createResizeMarker: function() {},
         _createMarker: function(t, e) {
-			console.log(e);
-            var i = new L.Marker(t, {
+			var i = new L.Marker(t, {
                 draggable: !0,
                 icon: e,
                 zIndexOffset: 10
@@ -692,8 +698,7 @@
         L.Edit.Rectangle && (this.editing = new L.Edit.Rectangle(this), this.options.editable && this.editing.enable())
     }), L.Edit = L.Edit || {}, L.Edit.Circle = L.Edit.SimpleShape.extend({
         _createMoveMarker: function() {
-			console.log("Move marker");
-            var t = this._shape.getLatLng();
+			var t = this._shape.getLatLng();
             this._moveMarker = this._createMarker(t, this.options.moveIcon)
         },
         _createResizeMarker: function() {
@@ -837,11 +842,11 @@
             this.enabled() && this._activeMode.handler.disable()
         },
         addToolbar: function(t) {
-            var e, i = L.DomUtil.create("div", "leaflet-draw-section"),
+			var e, i = L.DomUtil.create("div", "leaflet-draw-section"),
                 o = 0,
                 a = this._toolbarClass || "",
                 s = this.getModeHandlers(t);
-            for (this._toolbarContainer = L.DomUtil.create("div", "leaflet-draw-toolbar leaflet-bar"), this._map = t, e = 0; e < s.length; e++) s[e].enabled && this._initModeHandler(s[e].handler, this._toolbarContainer, o++, a, s[e].title);
+			for (this._toolbarContainer = L.DomUtil.create("div", "leaflet-draw-toolbar leaflet-bar"), this._map = t, e = 0; e < s.length; e++) s[e].enabled && this._initModeHandler(s[e].handler, this._toolbarContainer, o++, a, s[e].title);
             return o ? (this._lastButtonIndex = --o, this._actionsContainer = L.DomUtil.create("ul", "leaflet-draw-actions"), i.appendChild(this._toolbarContainer), i.appendChild(this._actionsContainer), i) : void 0
         },
         removeToolbar: function() {
@@ -862,7 +867,7 @@
         },
         _createButton: function(t) {
             var e = L.DomUtil.create("a", t.className || "", t.container);
-            return e.href = "#", t.text && (e.innerHTML = t.text), t.title && (e.title = t.title), L.DomEvent.on(e, "click", L.DomEvent.stopPropagation).on(e, "mousedown", L.DomEvent.stopPropagation).on(e, "dblclick", L.DomEvent.stopPropagation).on(e, "click", L.DomEvent.preventDefault).on(e, "click", t.callback, t.context), e
+			return e.href = "#", t.text && (e.innerHTML = t.text), t.title && (e.title = t.title), L.DomEvent.on(e, "click", L.DomEvent.stopPropagation).on(e, "mousedown", L.DomEvent.stopPropagation).on(e, "dblclick", L.DomEvent.stopPropagation).on(e, "click", L.DomEvent.preventDefault).on(e, "click", t.callback, t.context), e
         },
         _disposeButton: function(t, e) {
             L.DomEvent.off(t, "click", L.DomEvent.stopPropagation).off(t, "mousedown", L.DomEvent.stopPropagation).off(t, "dblclick", L.DomEvent.stopPropagation).off(t, "click", L.DomEvent.preventDefault).off(t, "click", e)
@@ -1056,8 +1061,7 @@
             this._uneditedLayerProps = {}, this.type = L.EditToolbar.Edit.TYPE
         },
         enable: function() {
-			console.log(L.Handler.prototype.enable);
-            !this._enabled && this._hasAvailableLayers() && (this.fire("enabled", {
+			!this._enabled && this._hasAvailableLayers() && (this.fire("enabled", {
                 handler: this.type
             }), this._map.fire("draw:editstart", {
                 handler: this.type
